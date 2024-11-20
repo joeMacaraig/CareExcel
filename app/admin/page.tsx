@@ -5,20 +5,22 @@ import { getRecentAppointmentList } from "@/lib/actions/appointment.action";
 import Image from "next/image";
 import Link from "next/link";
 
-
 const Admin = async () => {
   const appointments = await getRecentAppointmentList();
   return (
     <div className="mx-auto flex max-w-7xl flex-col space-y-14">
       <header className="admin-header">
         <Link href="/" className="cursor-pointer">
-          <Image
-            src="/assets/icons/logo-full.svg"
-            height={32}
-            width={162}
-            alt="Logo"
-            className="h-8 w-fit"
-          />
+          <div className="flex items-center">
+            <Image
+              src="/assets/icons/logo-icon.svg"
+              alt="patient"
+              width={1000}
+              height={1000}
+              className="h-10 w-fit"
+            />
+            <h1 className="text-3xl font-bold px-2">CarexCell</h1>
+          </div>
         </Link>
         <p className="text-16-semibold">Admin DashBaord</p>
       </header>

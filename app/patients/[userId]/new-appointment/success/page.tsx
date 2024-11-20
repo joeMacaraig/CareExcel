@@ -12,7 +12,7 @@ const Success = async ({
 }: SearchParamProps) => {
   const appointmentId = (searchParams?.appointmentId as string) || "";
   const appointment = await getAppointment(appointmentId);
-  console.log(appointment)
+  console.log(appointment);
   const doctor = Doctors.find(
     (doc) => doc.name === appointment.primaryPhysician
   );
@@ -20,13 +20,16 @@ const Success = async ({
     <div className="flex h-screen max-h-screen px-[5%]">
       <div className="success-img">
         <Link href="/">
-          <Image
-            src="/assets/icons/logo-full.svg"
-            width={1000}
-            height={1000}
-            alt="logo"
-            className="h-10 w-fit"
-          />
+        <div className="flex items-center">
+            <Image
+              src="/assets/icons/logo-icon.svg"
+              alt="patient"
+              width={1000}
+              height={1000}
+              className="h-10 w-fit"
+            />
+            <h1 className="text-3xl font-bold px-2">CarexCell</h1>
+          </div>
         </Link>
         <section className="flex flex-col items-center">
           <Image
@@ -39,7 +42,7 @@ const Success = async ({
             Your <span className="text-green-500">appointment request</span> has
             been successfully submitted!{" "}
           </h2>
-          <p>We&apos;ll be in touch shortly to confirm.</p>
+          <p>We'll be in touch shortly to confirm.</p>
         </section>
         <section className="request-details">
           <p>Requested appointment details:</p>

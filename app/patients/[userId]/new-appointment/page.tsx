@@ -2,23 +2,23 @@ import AppointmentForm from "@/components/forms/AppointmentForm";
 import { getPatient } from "@/lib/actions/patient.actions";
 import Image from "next/image";
 
-// 6738be2e0019643abf64
-
 const NewAppointment = async ({ params: { userId } }: SearchParamProps) => {
   const patient = await getPatient(userId);
   console.log(patient)
   return (
     <div className="flex h-screen max-h-screen">
-      {/* OTP VERIFICATION | PASSKEY MODAL*/}
       <section className="remove-scrollbar container my-auto">
         <div className="sub-container max-w-[860px] flex-1 justify-between">
-          <Image
-            src="/assets/icons/logo-full.svg"
-            alt="patient"
-            width={1000}
-            height={1000}
-            className="mb-12 h-10 w-fit"
-          />
+        <div className="flex items-center mb-12">
+            <Image
+              src="/assets/icons/logo-icon.svg"
+              alt="patient"
+              width={1000}
+              height={1000}
+              className="h-10 w-fit"
+            />
+            <h1 className="text-3xl font-bold px-2">CarexCell</h1>
+          </div>
 
           <AppointmentForm type="create" userId={userId} patientId={patient.$id} />
 
