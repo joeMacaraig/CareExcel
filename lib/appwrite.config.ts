@@ -9,6 +9,7 @@ export const {
   PATIENT_DB_ID,
   DOCTOR_DB_ID,
   APPOINTMENT_DB_ID,
+  PASSKEY
 } = process.env;
 
 const client = new sdk.Client();
