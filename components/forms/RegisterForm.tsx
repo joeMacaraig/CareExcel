@@ -7,8 +7,8 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
-import { UserFormValidation } from "@/lib/validation";
-import { createUser } from "@/lib/actions/patient.actions";
+import { PatientFormValidation } from "@/lib/validation";
+import { registerPatient } from "@/lib/actions/patient.actions";
 
 import { Form, FormControl } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -16,44 +16,65 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import SubmitButton from "../SubmitButton";
 import CustomForm from "../CustomForm";
 import { FormFieldType } from "./PatientForm";
-import { Doctors, GenderOptions, IdentificationTypes } from "@/constants";
+import {
+  Doctors,
+  GenderOptions,
+  IdentificationTypes,
+  PatientFormDefaultValues,
+} from "@/constants";
 import { Label } from "../ui/label";
 import { SelectItem } from "../ui/select";
 import Image from "next/image";
-import FileUploader from "../FileUploader";
+import { FileUploader } from "../FileUploader";
 
 const RegisterForm = ({ user }: { user: User }) => {
   const [isLoading, setLoading] = useState(false);
   const router = useRouter();
-
-  const form = useForm<z.infer<typeof UserFormValidation>>({
-    resolver: zodResolver(UserFormValidation),
+  const form = useForm<z.infer<typeof PatientFormValidation>>({
+    resolver: zodResolver(PatientFormValidation),
     defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
+      ...PatientFormDefaultValues,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
     },
   });
 
-  async function onSubmit({
-    name,
-    email,
-    phone,
-  }: z.infer<typeof UserFormValidation>) {
+  const onSubmit = async (values: z.infer<typeof PatientFormValidation>) => {
     setLoading(true);
+    console.log("SUBMITTING 💻");
+    // Store file info in form data as
+    let formData;
+    if (
+      values?.identificationDocument &&
+      values?.identificationDocument?.length > 0
+    ) {
+      const blobFile = new Blob([values.identificationDocument[0]], {
+        type: values.identificationDocument[0].type,
+      });
+
+      formData = new FormData();
+      formData.append("blobFile", blobFile);
+      formData.append("fileName", values.identificationDocument[0].name);
+    }
+    
     try {
-      const userData = {
-        name,
-        email,
-        phone,
+      const patientData = {
+        ...values,
+        userId: user.$id,
+        birthDate: new Date(values.birthDate),
+        identificationDocument: formData,
       };
-      const user = await createUser(userData);
-      if (user) router.push(`/patients/${user.$id}/register`);
+      //@ts-ignore
+      const patient = await registerPatient(patientData);
+
+      if (patient) router.push(`/patients/${user.$id}/new-appointment`);
     } catch (err) {
       console.log(`Something went wrong... ${err}`);
+    } finally {
+      setLoading(false);
     }
-    // setLoading(false);
-  }
+  };
   return (
     <Form {...form}>
       <form
@@ -160,8 +181,8 @@ const RegisterForm = ({ user }: { user: User }) => {
           <CustomForm
             fieldType={FormFieldType.PHONE_INPUT}
             control={form.control}
-            name="emergencyPhoneNumber"
-            label="Emergency Phone Number"
+            name="emergencyContactNumber"
+            label="Emergency Contact Number"
             placeholder="(123)-456-7890"
           />
         </div>

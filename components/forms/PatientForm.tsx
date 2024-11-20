@@ -52,7 +52,7 @@ const PatientForm = () => {
     } catch (err) {
       console.log(`Something went wrong... ${err}`);
     }
-    // setLoading(false);
+    setLoading(false);
   }
   return (
     <Form {...form}>
