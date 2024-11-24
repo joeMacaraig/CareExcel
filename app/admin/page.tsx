@@ -12,7 +12,7 @@ import Loader from "@/components/Loader";
 
 const Admin = () => {
   const router = useRouter();
-  const admin = localStorage.getItem("admin");
+  const admin = window.localStorage.getItem("admin");
   const [appointments, setAppointments] = useState<Appointments>({
     scheduledCount: 0,
     pendingCount: 0,
