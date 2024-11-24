@@ -53,7 +53,14 @@ declare type CreateAppointmentParams = {
 declare type UpdateAppointmentParams = {
   appointmentId: string;
   userId: string;
-  // timeZone: string;
   appointment: Appointment;
   type: string;
 };
+
+declare type Appointments = {
+  totalCount: number; 
+  scheduledCount: number; 
+  pendingCount: number; 
+  cancelledCount: number; 
+  documents: Appointment[]
+}
