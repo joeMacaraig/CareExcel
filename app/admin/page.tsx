@@ -12,7 +12,8 @@ import Loader from "@/components/Loader";
 
 const Admin = () => {
   const router = useRouter();
-  const admin = window.localStorage.getItem("admin");
+  const admin =
+    typeof window !== "undefined" ? window.localStorage.getItem("admin") : null;
   const [appointments, setAppointments] = useState<Appointments>({
     scheduledCount: 0,
     pendingCount: 0,
